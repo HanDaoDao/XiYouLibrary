@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XYTabBarController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
