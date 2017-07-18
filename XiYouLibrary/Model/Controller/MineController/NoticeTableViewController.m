@@ -8,7 +8,7 @@
 
 #import "NoticeTableViewController.h"
 #import "homeTableViewCell.h"
-#import "HomeNextViewController.h"
+#import "NoticeNextTableViewController.h"
 #import "MJRefresh.h"
 #import "AFNetworking.h"
 #import "Announce.h"
@@ -18,11 +18,18 @@
 
 @property(nonatomic,strong) Announce* announce;
 @property(nonatomic,strong) NSMutableArray* dataArray;
-@property(nonatomic,strong) AnnounceData* announceData;
 
 @end
 
 @implementation NoticeTableViewController
+
+//懒加载dataArray
+-(NSMutableArray *)dataArray{
+    if (!_dataArray) {
+        _dataArray = [NSMutableArray array];
+    }
+    return _dataArray;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -36,6 +43,9 @@
     self.tableView = [[UITableView alloc] init];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //当刚开始没有数据的时候，不显示cell的分割线
+    self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     //设置下拉刷新
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refresh)];
     [self.tableView.mj_header beginRefreshing];
@@ -75,7 +85,6 @@
     static NSString *indentifier = @"cell";
     UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:indentifier];
 
-    
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:indentifier];
     }
@@ -83,28 +92,29 @@
         UIView *v = cell.contentView.subviews[i];
         [v removeFromSuperview];
     }
-    homeTableViewCell *view = [[homeTableViewCell alloc]initWithFrame:CGRectMake(0, 0, WIDTH, cell.contentView.frame.size.height)];
-//    view.backgroundColor = [UIColor redColor];
+    homeTableViewCell *view = [[homeTableViewCell alloc]initWithFrame:CGRectMake(0, 0, WIDTH, 60)];
     
-    view.label.text = [_dataArray objectAtIndex:indexPath.row];
+    [view initView];
+    AnnounceData* a = [_dataArray objectAtIndex:indexPath.row];
+    view.label.text = a.Title;
     [cell.contentView addSubview:view];
     
     return cell;
 }
+
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSArray *textViewText = [[NSArray alloc] initWithObjects:@"星期一！",@"卧槽",@"你猜",@"哈哈哈哈",@"嗯嗯嗯嗯嗯", nil];
     
     //点击cell返回时，取消选择状态
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    HomeNextViewController *homeNextViewController = [[HomeNextViewController alloc] init];
-    homeNextViewController.hidesBottomBarWhenPushed = YES;
-    homeNextViewController.textViewText = textViewText[indexPath.row];
-    //    NSLog(@"%@",[textViewText objectAtIndex:indexPath.row]);
+    NoticeNextTableViewController *noticeNextTableViewController = [[NoticeNextTableViewController alloc] init];
+    noticeNextTableViewController.hidesBottomBarWhenPushed = YES;
+    AnnounceData* annouce = [_dataArray objectAtIndex:indexPath.row];
+    noticeNextTableViewController.annouceDate = annouce;
     
-    [self.navigationController pushViewController:homeNextViewController animated:YES];
+    [self.navigationController pushViewController:noticeNextTableViewController animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -129,19 +139,19 @@
                 NSLog(@"请求公告成功");
                 NSDictionary *resultDic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
 //                NSLog(@"%@",resultDic);
-
+                
                 //YYModel进行JSON转Model
                 _announce = [Announce yy_modelWithJSON:resultDic];
                 NSLog(@"~~~~~~~~~~~~~~~~~~~");
-                _dataArray = [[NSMutableArray alloc]init];
+//                NSLog(@"%@",_announce.Detail.Data);
                 
                 [_announce.Detail.Data enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                     NSDictionary *dataDic = obj;
-                    _announceData = [AnnounceData yy_modelWithDictionary:dataDic];
-                    NSString *title = [_announceData valueForKey:@"Title"];
-                    [_dataArray addObject:title];
+                    AnnounceData* ad = [AnnounceData yy_modelWithDictionary:dataDic];
+                    [self.dataArray addObject:ad];
                 }];
                 [self.tableView reloadData];
+                
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
             }];

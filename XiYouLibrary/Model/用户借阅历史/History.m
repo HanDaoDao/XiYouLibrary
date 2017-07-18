@@ -2,17 +2,17 @@
 //  Borrow.m
 //  XiYouLibrary
 //
-//  Created by 韩钊 on 2017/7/9.
+//  Created by 韩钊 on 2017/5/31.
 //  Copyright © 2017年 韩钊. All rights reserved.
 //
 
-#import "Borrow.h"
+#import "History.h"
 
-@implementation Borrow
+@implementation History
 
 -(nullable NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
     return @{
-             @"Data" : [BorrowDetail class],
+             @"Detail" : HistoryDetail.class,
              @"Result" :@"Result"
              };
 }

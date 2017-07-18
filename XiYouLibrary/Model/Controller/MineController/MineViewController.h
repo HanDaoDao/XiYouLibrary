@@ -10,7 +10,9 @@
 #import "Masonry.h"
 #import "YYModel.h"
 #import "mineTableViewCell.h"
-#import "MineNextViewController.h"
+#import "MineBorrowViewController.h"
+#import "MineHistoryViewController.h"
+#import "MineFavoriteViewController.h"
 
 #define WIDTH  [UIScreen mainScreen].bounds.size.width
 #define HEIGHT [UIScreen mainScreen].bounds.size.height

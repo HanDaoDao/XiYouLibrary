@@ -6,8 +6,8 @@
 //  Copyright © 2017年 韩钊. All rights reserved.
 //
 
-#import "BorrowInfo.h"
+#import "HistoryDetail.h"
 
-@implementation BorrowInfo
+@implementation HistoryDetail
 
 @end

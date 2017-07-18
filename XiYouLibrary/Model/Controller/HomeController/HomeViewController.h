@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "Masonry.h"
 #import "homeTableViewCell.h"
-#import "HomeNextViewController.h"
 #import "NoticeTableViewController.h"
 #import "NewsTableViewController.h"
 #import "Masonry.h"

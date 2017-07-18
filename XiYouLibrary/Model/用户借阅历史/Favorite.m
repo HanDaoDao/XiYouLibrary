@@ -1,18 +1,18 @@
 //
-//  Borrow.m
+//  Favorite.m
 //  XiYouLibrary
 //
-//  Created by 韩钊 on 2017/7/9.
+//  Created by 韩钊 on 2017/7/13.
 //  Copyright © 2017年 韩钊. All rights reserved.
 //
 
-#import "Borrow.h"
+#import "Favorite.h"
 
-@implementation Borrow
+@implementation Favorite
 
 -(nullable NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
     return @{
-             @"Data" : [BorrowDetail class],
+             @"Detail" : FavoriteDetail.class,
              @"Result" :@"Result"
              };
 }

@@ -111,6 +111,9 @@
         cell.nameLabel.text = _userInfo.Detail.Name;
         cell.majorLabel.text = _userInfo.Detail.Department;
         cell.IDLabel.text = _userInfo.Detail.ID;
+        //不能点击
+        cell.userInteractionEnabled = NO;
+
     }
     else{
         [cell initMineCell];
@@ -126,9 +129,27 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    MineNextViewController *mineNextViewController = [[MineNextViewController alloc] init];
-    mineNextViewController.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:mineNextViewController animated:YES];
+    if (indexPath.section == 1) {
+        
+        if (indexPath.row == 0) {
+            MineBorrowViewController *mineBorrowViewController = [[MineBorrowViewController alloc] init];
+            mineBorrowViewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:mineBorrowViewController animated:YES];
+        }
+        
+        else if (indexPath.row == 1){
+            MineFavoriteViewController *mineFavoriteViewController = [[MineFavoriteViewController alloc] init];
+            mineFavoriteViewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:mineFavoriteViewController animated:YES];
+        }
+        
+        else if (indexPath.row == 2){
+            MineHistoryViewController *mineHistoryViewController = [[MineHistoryViewController alloc] init];
+            mineHistoryViewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:mineHistoryViewController animated:YES];
+        }
+
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

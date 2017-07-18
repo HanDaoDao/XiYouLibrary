@@ -7,8 +7,8 @@
 //
 
 #import "NewsTableViewController.h"
+#import "NewsNextTableViewController.h"
 #import "homeTableViewCell.h"
-#import "HomeNextViewController.h"
 #import "MJRefresh.h"
 #import "AFNetworking.h"
 #import "Announce.h"
@@ -18,11 +18,18 @@
 
 @property(nonatomic,strong) Announce* news;
 @property(nonatomic,strong) NSMutableArray* dataArray;
-@property(nonatomic,strong) AnnounceData* newsData;
 
 @end
 
 @implementation NewsTableViewController
+
+//懒加载dataArray
+-(NSMutableArray *)dataArray{
+    if (!_dataArray) {
+        _dataArray = [NSMutableArray array];
+    }
+    return _dataArray;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -36,7 +43,8 @@
     self.tableView = [[UITableView alloc] init];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
-    
+    //当刚开始没有数据的时候，不显示cell
+    self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     //设置下拉刷新
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refresh)];
     [self.tableView.mj_header beginRefreshing];
@@ -79,16 +87,17 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:indentifier];
     }
+    
     for (int i = 0; i<cell.contentView.subviews.count; i++) {
         UIView *v = cell.contentView.subviews[i];
         [v removeFromSuperview];
     }
-    cell.backgroundColor = [UIColor yellowColor];
-    NSLog(@"%@",NSStringFromCGRect(cell.contentView.frame));
-    homeTableViewCell *view = [[homeTableViewCell alloc]initWithFrame:CGRectMake(0, 0, 800, cell.contentView.frame.size.height)];
-    view.backgroundColor = [UIColor redColor];
-    
-    view.label.text = [_dataArray objectAtIndex:indexPath.row];
+
+    homeTableViewCell *view = [[homeTableViewCell alloc]initWithFrame:CGRectMake(0, 0, WIDTH, 60)];
+    [view initView];
+
+    AnnounceData* a = [_dataArray objectAtIndex:indexPath.row];
+    view.label.text = a.Title;
     [cell.contentView addSubview:view];
     
     return cell;
@@ -97,17 +106,15 @@
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSArray *textViewText = [[NSArray alloc] initWithObjects:@"星期一！",@"卧槽",@"你猜",@"哈哈哈哈",@"嗯嗯嗯嗯嗯", nil];
     
     //点击cell返回时，取消选择状态
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    HomeNextViewController *homeNextViewController = [[HomeNextViewController alloc] init];
-    homeNextViewController.hidesBottomBarWhenPushed = YES;
-    homeNextViewController.textViewText = textViewText[indexPath.row];
-    //    NSLog(@"%@",[textViewText objectAtIndex:indexPath.row]);
-    
-    [self.navigationController pushViewController:homeNextViewController animated:YES];
+    NewsNextTableViewController *newsNextViewController = [[NewsNextTableViewController alloc] init];
+    newsNextViewController.hidesBottomBarWhenPushed = YES;
+    AnnounceData* annouce = [_dataArray objectAtIndex:indexPath.row];
+    newsNextViewController.annouceDate = annouce;
+    [self.navigationController pushViewController:newsNextViewController animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -136,13 +143,11 @@
                     //YYModel进行JSON转Model
                     _news = [Announce yy_modelWithJSON:resultDic];
                     NSLog(@"~~~~~~~~~~~~~~~~~~~");
-                    _dataArray = [[NSMutableArray alloc]init];
                     
                     [_news.Detail.Data enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                         NSDictionary *dataDic = obj;
-                        _newsData = [AnnounceData yy_modelWithDictionary:dataDic];
-                        NSString *title = [_newsData valueForKey:@"Title"];
-                        [_dataArray addObject:title];
+                        AnnounceData* nd = [AnnounceData yy_modelWithDictionary:dataDic];
+                        [self.dataArray addObject:nd];
                     }];
                     [self.tableView reloadData];
                 } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

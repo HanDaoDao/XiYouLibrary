@@ -63,7 +63,7 @@
     }
     [cell initSettingCell];
     cell.label.text = [_settingListNames objectAtIndex:indexPath.row];
-    
+
     //3个switch按钮
     if (indexPath.row == 0 ) {
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -120,13 +120,20 @@
 }
 
 
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     SettingNextViewController *settingNextViewController = [[SettingNextViewController alloc] init];
     settingNextViewController.hidesBottomBarWhenPushed = YES;
     
-    [self.navigationController pushViewController:settingNextViewController animated:YES];
+    if (indexPath.row == 3) {
+        [self.navigationController pushViewController:settingNextViewController animated:YES];
+    }
+    else if(indexPath.row == 4){
+        [self.navigationController pushViewController:settingNextViewController animated:YES];
+    }
+    
 }
 
 
