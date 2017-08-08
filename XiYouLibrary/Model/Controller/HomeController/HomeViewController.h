@@ -7,12 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Masonry.h"
-#import "homeTableViewCell.h"
-#import "NoticeTableViewController.h"
-#import "NewsTableViewController.h"
-#import "Masonry.h"
-#import "MJRefresh.h"
+#import "Header.h"
 
 #define WIDTH  [UIScreen mainScreen].bounds.size.width
 #define HEIGHT [UIScreen mainScreen].bounds.size.height

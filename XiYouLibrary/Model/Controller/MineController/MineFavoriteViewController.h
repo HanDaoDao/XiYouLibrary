@@ -12,7 +12,7 @@
 #import "YYModel.h"
 #import "Favorite.h"
 #import "MineCell.h"
-
+#import "Header.h"
 
 @interface MineFavoriteViewController : UIViewController
 

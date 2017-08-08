@@ -10,6 +10,7 @@
 #import "Announce.h"
 #import "AnnounceDetail.h"
 #import "YYModel.h"
+#import "Header.h"
 
 #define WIDTH  [UIScreen mainScreen].bounds.size.width
 #define HEIGHT [UIScreen mainScreen].bounds.size.height

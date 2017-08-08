@@ -13,6 +13,7 @@
 #import "YYModel.h"
 #import "MineCell.h"
 #import "Borrow.h"
+#import "Header.h"
 
 @interface MineBorrowViewController : UIViewController
 

@@ -41,6 +41,9 @@
      _session = [Session objectForKey:@"session"];
     NSLog(@"%@",_session);
     
+    //显示HUD
+    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeNone];
+    
     [self getUserBorrow];
     [self initTableView];
 }
@@ -155,6 +158,9 @@
 //                       NSLog(@"~~~~~~~~~%@~~~~~~~",bd);
                        [self.dataArray addObject:bd];
                    }];
+                   
+                   [SVProgressHUD dismiss];
+                   //更新tableView的信息
                    [self.tableView reloadData];
 //                   NSLog(@"%lu",(unsigned long)_dataArray.count);
                 

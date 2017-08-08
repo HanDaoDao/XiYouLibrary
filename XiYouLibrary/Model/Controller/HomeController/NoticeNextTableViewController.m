@@ -23,7 +23,13 @@
     // Do any additional setup after loading the view.
     self.navigationController.navigationBar.tintColor=[UIColor whiteColor];
     
+    
     [self getNoticeDetail];
+    
+    //显示HUD
+    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeNone];
+
+
 }
 
 -(void)initWebView{
@@ -35,6 +41,9 @@
     [_webView loadHTMLString:_announceDetail.Detail.Passage baseURL:nil];
     
     [self.view addSubview:_webView];
+    
+    [SVProgressHUD dismiss];
+
 }
 
 //网络请求获取公告详细信息
@@ -59,6 +68,7 @@
                     _announceDetail = [AnnounceDetail yy_modelWithJSON:resultDic];
                     NSLog(@"~~~~~~~~~~~~~~~~~~~");
    
+
                     [self initWebView];
 
     
@@ -67,7 +77,6 @@
                     
                 }];
 }
-
 
 
 

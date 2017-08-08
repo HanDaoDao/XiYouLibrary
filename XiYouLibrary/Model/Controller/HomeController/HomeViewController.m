@@ -27,11 +27,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    //设置导航栏的背景色（图片）
-//    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:243/255.0 green:92/255.0 blue:90/255.0 alpha:1];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"导航栏"] forBarMetrics:UIBarMetricsDefault];
-    
-    
+    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"search"] style:UIBarButtonItemStylePlain target:self action:@selector(searchAction)];
+    self.navigationItem.rightBarButtonItem = searchButton;
+    self.navigationController.navigationBar.tintColor=[UIColor whiteColor];
+
     //设置navigationBar字体及颜色
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor],NSForegroundColorAttributeName, [UIFont fontWithName:@"PingFang SC" size:18], NSFontAttributeName,nil];
     [self.navigationController.navigationBar setTitleTextAttributes:attributes];
@@ -46,6 +46,10 @@
     [self setupChildControllers];
     [self initBackGroundView];
     [self scrollViewDidEndScrollingAnimation:_homeScrollView];
+    
+    if ([SVProgressHUD isVisible]) {
+        [SVProgressHUD dismiss];
+    }
 }
 
 
@@ -107,6 +111,13 @@
         }];
         
     }
+}
+
+//navigationBar搜索按钮点击事件
+-(void)searchAction{
+    SearchItemViewController *searchItemVC = [[SearchItemViewController alloc]init];
+    searchItemVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:searchItemVC animated:YES];
 }
 
 //初始化ScrollView,TableView

@@ -40,6 +40,9 @@
     _session = [Session objectForKey:@"session"];
     NSLog(@"%@",_session);
     
+    //显示HUD
+    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeNone];
+    
     [self getUserHistory];
     [self initTableView];
 }
@@ -129,6 +132,8 @@
                         HistoryDetail *hd = [HistoryDetail yy_modelWithDictionary:detaile];
                         [self.dataArray addObject:hd];
                     }];
+                    
+                    [SVProgressHUD dismiss];
                     [self.tableView reloadData];
                     
                 } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

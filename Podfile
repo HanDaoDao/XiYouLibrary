@@ -13,6 +13,7 @@ target 'XiYouLibrary' do
   pod 'SDWebImage'
   pod 'MJRefresh'
   pod 'YYModel'
+  pod 'SVProgressHUD'
 
   target 'XiYouLibraryTests' do
     inherit! :search_paths

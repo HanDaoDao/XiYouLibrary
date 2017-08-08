@@ -13,6 +13,7 @@
 #import "MineBorrowViewController.h"
 #import "MineHistoryViewController.h"
 #import "MineFavoriteViewController.h"
+#import "Header.h"
 
 #define WIDTH  [UIScreen mainScreen].bounds.size.width
 #define HEIGHT [UIScreen mainScreen].bounds.size.height

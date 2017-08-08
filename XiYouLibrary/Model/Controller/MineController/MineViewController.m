@@ -243,9 +243,9 @@
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         
-                        //删除登录按钮
-                        [self.loginButton removeFromSuperview];
+
                         
+                        [SVProgressHUD dismiss];
                         //初始化Mine的tableView
                         [self initMineListNames];
                         [self initMineTableView];
@@ -275,6 +275,9 @@
         _loginUserName = loginAlter.textFields.firstObject.text;
         _loginPassword = loginAlter.textFields.lastObject.text;
         
+        //删除登录按钮
+        [self.loginButton removeFromSuperview];
+        [SVProgressHUD showWithStatus:@"正在登陆..." maskType:SVProgressHUDMaskTypeNone];
         
         //给账号之前加“S”
         _loginUserName = [NSString stringWithFormat:@"S%@",_loginUserName];

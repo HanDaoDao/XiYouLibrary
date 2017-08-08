@@ -38,6 +38,9 @@
     _session = [Session objectForKey:@"session"];
     NSLog(@"%@",_session);
     
+    //显示HUD
+    [SVProgressHUD showWithStatus:@"加载中..." maskType:SVProgressHUDMaskTypeNone];
+    
     [self getUserFavorite];
     [self initTableView];
 }
@@ -128,6 +131,8 @@
                     FavoriteDetail *bd = [FavoriteDetail yy_modelWithDictionary:detaile];
                     [self.dataArray addObject:bd];
                 }];
+                
+                [SVProgressHUD dismiss];
                 [self.tableView reloadData];
                 
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

@@ -13,7 +13,7 @@
 #import "MineTableViewCell.h"
 #import "History.h"
 #import "MineCell.h"
-
+#import "Header.h"
 @interface MineHistoryViewController : UIViewController
 
 @end
